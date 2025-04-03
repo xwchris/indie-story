@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Story {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  summary     String   @db.Text
+  revenue     Float?
+  sourceUrl   String
+  authorName  String
+  authorInfo  String?  @db.Text
+  tags        Tag[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  stories   Story[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
